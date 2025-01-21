@@ -11,6 +11,12 @@ const Image = ({ src, className, width, height, alt }) => {
       height={height}
       loading="lazy"
       lqip={{ active: true, quality: 20 }}
+      transformation={[
+        {
+          width: width,
+          height: height,
+        },
+      ]}
     />
   );
 };
