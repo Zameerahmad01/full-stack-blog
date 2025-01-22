@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #e6e6ff;
+  width: 100vw;
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
+}
+
+.ql-editor {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #333;
+  border: none !important;
+}
+
+.ql-container {
+  border: none !important;
+}
+
+.ql-toolbar {
+  border: none !important;
+}
