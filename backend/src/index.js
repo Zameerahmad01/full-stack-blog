@@ -4,7 +4,6 @@ import { ConnectDB } from "./db/index.js";
 dotenv.config();
 
 const app = express();
-
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
@@ -16,8 +15,16 @@ import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
 app.use("/api/users", userRoutes);
-app.use("/api/post", postRoutes);
+app.use("/api/posts", postRoutes);
 app.use("/api/comment", commentRoutes);
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({
+    message: err.message || "something went wrong!",
+    status: err.status,
+    stack: err.stack,
+  });
+});
 
 //connect database and run server
 ConnectDB()
