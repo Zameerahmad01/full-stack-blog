@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "./Image";
 import { Link } from "react-router-dom";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+import { SignedIn, SignedOut, useAuth, UserButton } from "@clerk/clerk-react";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
+
+  const { getToken } = useAuth();
+
+  useEffect(() => {
+    getToken().then((token) => console.log(token));
+  }, []);
   return (
     <nav className="w-full h-16 md:20 flex items-center justify-between ">
       {/* logo */}
