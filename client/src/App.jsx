@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import PostListPage from "./pages/PostListPage";
 import SinglePostPage from "./pages/SinglePostPage";
 import WritePage from "./pages/WritePage";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/:slug" element={<SinglePostPage />} />
         <Route path="/write" element={<WritePage />} />
       </Routes>
+      <ToastContainer position="bottom-right" />
     </main>
   );
 };
