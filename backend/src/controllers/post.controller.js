@@ -1,5 +1,6 @@
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import ImageKit from "imagekit";
 
 const getPosts = async (req, res) => {
   const posts = await Post.find();
@@ -48,4 +49,14 @@ const deletePost = async (req, res) => {
   res.status(200).json("post has been deleted");
 };
 
-export { getPosts, getPost, createPost, deletePost };
+const imagekit = new ImageKit({
+  urlEndpoint: "https://ik.imagekit.io/zameer",
+  publicKey: "public_Rigjsxh1mcA8RDiXAVHavSvb2pY=",
+  privateKey: "private_NtscjWhzATKeYXc1mAvkEoX8B3A=",
+});
+
+const uploadAuth = (req, res) => {
+  const result = imagekit.getAuthenticationParameters();
+  res.send(result);
+};
+export { getPosts, getPost, createPost, deletePost, uploadAuth };
