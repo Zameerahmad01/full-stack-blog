@@ -1,38 +1,45 @@
 import { Link } from "react-router-dom";
 import Image from "./Image";
+import { format } from "timeago.js";
 
-const PostItem = () => {
+const PostItem = ({ post }) => {
   return (
-    <div className="flex flex-col lg:flex-row gap-4">
+    <div className="flex flex-col lg:flex-row gap-8 mb-8">
       <div className="md:hidden lg:block lg:w-1/3">
         <Image
-          src="postImg.jpeg"
-          className="rounded-2xl w-full object-cover"
+          src={post.img}
+          className="rounded-2xl w-full h-80 object-center"
           width="735"
         />
       </div>
 
       {/* content  */}
       <div className="flex flex-col gap-4 lg:w-2/3">
-        <Link to="/test" className="font-semibold text-2xl md:text-4xl">
+        <Link
+          to={`/${post.slug}`}
+          className="font-semibold text-2xl md:text-3xl"
+        >
           {" "}
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos
-          reprehenderit molestiae odit doloribus.
+          {post.title}{" "}
         </Link>
         <div className="flex items-center gap-2 text-sm">
           <span className="text-sm text-gray-400">Written By</span>
-          <Link className="font-medium text-blue-800">John Doe</Link>
+          <Link className="font-medium text-blue-800">
+            {post.user.userName}
+          </Link>
           <span className="text-sm text-gray-400">on</span>
-          <Link className="font-medium text-blue-800">Web Design</Link>
-          <span className="text-sm text-gray-400">2 days ago</span>
+          <Link className="font-medium text-blue-800">{post.category}</Link>
+          <span className="text-sm text-gray-400">
+            {format(post.createdAt)}
+          </span>
         </div>
-        <p className="text-gray-600 text-sm font-medium">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. A animi
-          accusamus eius ad deserunt doloremque esse nesciunt nostrum. Ducimus
-          fugiat, dolor excepturi ratione quos commodi nulla perferendis alias
-          quia est.
+        <p
+          className="text-gray-600 text-lg
+         font-medium"
+        >
+          {post.description}
         </p>
-        <Link to="/test" className="text-blue-800 underline text-sm">
+        <Link to={`/${post.slug}`} className="text-blue-800 underline text-sm">
           Read More
         </Link>
       </div>
