@@ -1,5 +1,32 @@
-const register = async (req, res) => {
-  res.send("register user");
+import User from "../models/user.model.js";
+
+const savedPosts = async (req, res) => {
+  const user = req.user;
+  const loggedInUser = await User.findById(user._id).populate("savedPosts");
+
+  res.json(loggedInUser.savedPosts);
 };
 
-export { register };
+const savePost = async (req, res) => {
+  const user = req.user;
+  const { postId } = req.body;
+
+  const existingUser = await User.findById(user._id);
+  if (existingUser.savedPosts.includes(postId)) {
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { $pull: { savedPosts: postId } },
+      { new: true }
+    );
+    return res.status(200).json({ updatedUser, message: "Post unsaved" });
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    user._id,
+    { $push: { savedPosts: postId } },
+    { new: true }
+  );
+
+  res.json({ updatedUser, message: "Post saved" });
+};
+
+export { savedPosts, savePost };
