@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { register } from "../controllers/user.controller.js";
+import { savePost, savedPosts } from "../controllers/user.controller.js";
+import { verifyAuth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/register", register);
+router.get("/savedPosts", verifyAuth, savedPosts);
+router.patch("/savePost", verifyAuth, savePost);
 
 export default router;
