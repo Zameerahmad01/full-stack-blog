@@ -3,7 +3,6 @@ import Comment from "./Comment";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { toast } from "react-toastify";
-import { useState } from "react";
 
 const fetchComments = async (postId) => {
   const response = await axios.get(
