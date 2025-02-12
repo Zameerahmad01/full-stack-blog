@@ -8,6 +8,12 @@ const savedPosts = async (req, res) => {
 };
 
 const savePost = async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  if (!req.body.postId) {
+    return res.status(400).json({ message: "Post ID is required" });
+  }
   const user = req.user;
   const { postId } = req.body;
 
