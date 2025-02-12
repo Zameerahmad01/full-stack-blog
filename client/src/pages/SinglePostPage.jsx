@@ -186,7 +186,7 @@ const SinglePostPage = () => {
               </Link>
             </div>
           </div>
-          <PostMenuAction />
+          <PostMenuAction post={data} />
           <div className="flex flex-col gap-4">
             <h1 className="mt-4 text-sm font-medium">Categorios</h1>
             <div className="flex flex-col gap-2 text-sm">
