@@ -32,7 +32,7 @@ const savePost = async (req, res) => {
     { new: true }
   );
 
-  res.json({ updatedUser, message: "Post saved" });
+  return res.json({ updatedUser, message: "Post saved" });
 };
 
 export { savedPosts, savePost };
