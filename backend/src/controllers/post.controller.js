@@ -59,7 +59,7 @@ const deletePost = async (req, res) => {
       .status(403)
       .json({ message: "Your not allowed to delete this post" });
   }
-  res.status(200).json("post has been deleted");
+  res.status(200).json({ message: "post has been deleted" });
 };
 
 const imagekit = new ImageKit({
