@@ -48,6 +48,12 @@ const createPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   const user = req.user;
+  const role = req.auth.sessionClaims.metadata.role || "user";
+
+  if (role === "admin") {
+    await Post.findOneAndDelete({ _id: req.params.id });
+    return res.status(200).json({ message: "post has been deleted" });
+  }
 
   const deletedPost = await Post.findOneAndDelete({
     _id: req.params.id,
@@ -62,6 +68,30 @@ const deletePost = async (req, res) => {
   res.status(200).json({ message: "post has been deleted" });
 };
 
+const featurePost = async (req, res) => {
+  const user = req.user;
+  const postId = req.body.postId;
+  const role = req.auth.sessionClaims.metadata.role || "user";
+
+  if (role !== "admin") {
+    return res.status(400).json({ message: "You cannot feature posts!" });
+  }
+
+  const post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found!" });
+  }
+
+  const isFeatured = post.isFeatured;
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    { isFeatured: !isFeatured },
+    { new: true }
+  );
+  res.status(200).json({ updatedPost, message: "post has been deleted" });
+};
+
 const imagekit = new ImageKit({
   urlEndpoint: "https://ik.imagekit.io/zameer",
   publicKey: "public_Rigjsxh1mcA8RDiXAVHavSvb2pY=",
@@ -72,4 +102,5 @@ const uploadAuth = (req, res) => {
   const result = imagekit.getAuthenticationParameters();
   res.send(result);
 };
-export { getPosts, getPost, createPost, deletePost, uploadAuth };
+
+export { getPosts, getPost, createPost, deletePost, uploadAuth, featurePost };
