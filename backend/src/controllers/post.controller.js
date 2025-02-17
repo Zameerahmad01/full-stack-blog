@@ -6,9 +6,63 @@ const getPosts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 2;
 
-  const posts = await Post.find()
+  const query = {};
+
+  const cat = req.query.cat;
+  const author = req.query.author;
+  const searchQuery = req.query.search;
+  const sortQuery = req.query.sort;
+  const featured = req.query.featured;
+
+  if (cat) {
+    query.category = cat;
+  }
+
+  if (author) {
+    const user = await User.findOne({ userName: author }).select("_id");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    query.user = user._id;
+  }
+
+  if (searchQuery) {
+    query.title = { $regex: searchQuery, $options: "i" };
+  }
+
+  let sortObj = { createdAt: -1 };
+  if (sortQuery) {
+    switch (sortQuery) {
+      case "newest":
+        sortObj = { createdAt: -1 };
+        break;
+      case "oldest":
+        sortObj = { createdAt: 1 };
+        break;
+      case "popular":
+        sortObj = { visit: -1 };
+        break;
+      case "trending":
+        sortObj = { visit: -1 };
+        query.createdAt = {
+          $gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+        };
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  if (featured) {
+    query.isFeatured = featured;
+  }
+
+  const posts = await Post.find(query)
     .populate("user", "userName")
-    .sort({ createdAt: -1 })
+    .sort(sortObj)
     .limit(limit)
     .skip((page - 1) * limit);
 
