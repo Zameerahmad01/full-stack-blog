@@ -73,7 +73,30 @@ const PostMenuAction = ({ post }) => {
     },
   });
 
-  const admin = user?.roles.includes("admin");
+  const featurePost = useMutation({
+    mutationFn: async (postId) => {
+      const token = await getToken();
+      return axios.patch(
+        `${import.meta.env.VITE_API_URL}/posts/feature`,
+        { postId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    },
+    onSuccess: () => {
+      toast.success("post has been featured");
+      queryClient.invalidateQueries(["post", post.slug]);
+    },
+
+    onError: (error) => {
+      toast.error(error.response.data.message);
+    },
+  });
+
+  const isAdmin = user?.publicMetadata.role === "admin" || false;
   const isSaved = savedPosts?.some((savedPost) => savedPost === post._id);
 
   return (
@@ -81,8 +104,6 @@ const PostMenuAction = ({ post }) => {
       <h1 className="mt-4 text-sm font-medium">Actions</h1>
       {isPending ? (
         "loading"
-      ) : error ? (
-        "saved fetch failed"
       ) : (
         <div
           className="flex items-center gap-2 cursor-pointer"
@@ -123,7 +144,64 @@ const PostMenuAction = ({ post }) => {
           </span>
         </div>
       )}
-      {user && post.user.userName === user?.username && (
+      {isAdmin && (
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => featurePost.mutate(post._id)}
+        >
+          {post.isFeatured ? (
+            <svg
+              fill="#000000"
+              height="40px"
+              width="40px"
+              version="1.1"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 472.615 472.615"
+              xmlSpace="preserve"
+              className="size-4"
+            >
+              <g>
+                <g>
+                  <polygon
+                    points="472.615,183.253 297.148,176.296 236.308,11.566 175.468,176.296 0,183.253 137.868,292.02 90.262,461.05 
+			236.308,363.541 382.355,461.05 334.748,292.02 		"
+                  />
+                </g>
+              </g>
+            </svg>
+          ) : (
+            <svg
+              fill="#000000"
+              height="40px"
+              width="40px"
+              version="1.1"
+              id="Layer_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlnsXlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 526.673 526.673"
+              xmlSpace="preserve"
+              className="size-4"
+            >
+              <g>
+                <g>
+                  <path
+                    d="M526.673,204.221l-195.529-7.76L263.337,12.885l-67.798,183.577L0,204.221l153.635,121.202l-53.048,188.365
+			l162.75-108.664l162.75,108.664l-53.048-188.365L526.673,204.221z M392.683,467.808l-129.346-86.356L133.99,467.808
+			l42.163-149.692L54.058,221.779l155.404-6.163l53.875-145.885l53.885,145.885l155.394,6.163l-122.096,96.337L392.683,467.808z"
+                  />
+                </g>
+              </g>
+            </svg>
+          )}
+
+          <span className="text-sm">
+            {featurePost.isPending ? "Featuring" : "featured this post"}
+          </span>
+        </div>
+      )}
+      {user && (post.user.userName === user?.username || isAdmin) && (
         <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => deletePost.mutate(post._id)}
@@ -138,7 +216,7 @@ const PostMenuAction = ({ post }) => {
             />
           ) : null}
           <span className="text-sm">
-            {deletePost.isPending ? "in progress" : "Delete this post"}
+            {deletePost.isPending ? "Deleting" : "Delete this post"}
           </span>
         </div>
       )}
