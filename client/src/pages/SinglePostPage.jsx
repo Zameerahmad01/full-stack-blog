@@ -47,11 +47,19 @@ const SinglePostPage = () => {
           </h1>
           <div className="flex items-center gap-2 text-sm">
             <span className="text-sm text-gray-400">Written By</span>
-            <Link className="font-medium text-blue-800">
+            <Link
+              to={`/posts?author=${data.user.userName}`}
+              className="font-medium text-blue-800"
+            >
               {data?.user.userName}
             </Link>
             <span className="text-sm text-gray-400">on</span>
-            <Link className="font-medium text-blue-800">{data.category}</Link>
+            <Link
+              to={`/posts?cat=${data.category}`}
+              className="font-medium text-blue-800"
+            >
+              {data.category}
+            </Link>
             <span className="text-sm text-gray-400">
               {format(data?.createdAt)}
             </span>
