@@ -41,11 +41,11 @@ const getPosts = async (req, res) => {
       case "oldest":
         sortObj = { createdAt: 1 };
         break;
-      case "popular":
-        sortObj = { visit: -1 };
+      case "mostPopular":
+        sortObj = { visits: -1 };
         break;
       case "trending":
-        sortObj = { visit: -1 };
+        sortObj = { visits: -1 };
         query.createdAt = {
           $gte: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
         };
@@ -57,7 +57,7 @@ const getPosts = async (req, res) => {
   }
 
   if (featured) {
-    query.isFeatured = featured;
+    query.isFeatured = true;
   }
 
   const posts = await Post.find(query)
