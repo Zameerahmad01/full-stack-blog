@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Image from "./Image";
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
@@ -9,14 +8,6 @@ const Navbar = () => {
     <nav className="w-full h-16 md:20 flex items-center justify-between ">
       {/* logo */}
       <Link to="/" className="flex items-center gap-4 font-bold text-2xl">
-        <Image
-          src="/logo.png"
-          alt="logo"
-          className="size-8"
-          width="32"
-          height="32"
-        />
-
         <span>Blog</span>
       </Link>
       {/* mobile menu  */}
