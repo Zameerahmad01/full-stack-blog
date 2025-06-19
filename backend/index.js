@@ -32,6 +32,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the backend server!");
+});
+
 //routes
 import userRoutes from "./routes/user.routes.js";
 import postRoutes from "./routes/post.routes.js";
