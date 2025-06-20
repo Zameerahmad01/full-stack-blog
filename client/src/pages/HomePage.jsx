@@ -17,11 +17,11 @@ const HomePage = () => {
       <div className="flex items-center justify-between">
         <div className="flex flex-col ">
           <h1 className=" text-gray-800 text-2xl md:text-5xl lg:text-6xl font-bold">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Web Design, Code, SEO & Strategy — All in One Place.
           </h1>
           <p className=" mt-8 text-md md:text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim,
-            inventore.
+            Expert tips on web design, development, SEO, and digital marketing.
+            Stay ahead with practical guides, tools, and the latest trends.
           </p>
         </div>
         <Link to="/write" className="hidden md:block relative">
